@@ -16,7 +16,7 @@ object_bytes = DE.get_bytes_by_s3_key_object(
     args['par_source_bucket_name'], 
     args['par_unzip_file_key'],
     logger
-    )
+)
 ```
 
 ## Enviroments
