@@ -20,5 +20,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.9',
-    install_requires=['boto3'],
+    install_requires=['boto3','zip-files'],
 )

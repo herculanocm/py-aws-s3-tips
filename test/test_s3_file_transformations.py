@@ -6,7 +6,7 @@ from boto3 import client as aws_client
 
 @pytest.fixture(scope="session")
 def s3_client():
-    aws_access_key_id='AKIAWANCEVXNA4IVFQH6'
+    aws_access_key_id=''
     aws_secret_access_key=''
     
     s3_client = aws_client(

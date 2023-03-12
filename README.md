@@ -1,5 +1,5 @@
-# Pyspark tips for use
-de_pyspark_tips = Data Engineer Pyspark Tips
+# Py tips for use
+de_aws_s3_tips = Data Engineer AWS S3 Python Tips
 ## Using:
 
 First generate wheel file for install with
@@ -9,18 +9,19 @@ python setup.py bdist_wheel
 
 Import the module
 ```
-import de_pyspark_tips.df_transformations as ET
+from de_aws_s3_tips import s3_file_transformations as DE
 
-castedDF = ET.cast_columns_types_by_schema(df, list_schema, True)
-filterDF = ET.choose_last_row_modify_by_ids(castedDF, ['id'], ['data_transaction'])
+object_bytes = DE.get_bytes_by_s3_key_object(
+    s3_client,
+    args['par_source_bucket_name'], 
+    args['par_unzip_file_key'],
+    logger
+    )
 ```
 
 ## Enviroments
 
 * Python 3.9
-* JAVA 1.8
-* SPARK 3.2
-* Pyspark >=3.1,<3.3
 
 ## Tests
 

@@ -9,12 +9,20 @@ class CustomFormatter(logging.Formatter):
     reset = "\x1b[0m"
     format = "%(asctime)s - %(module)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
 
+    # FORMATS = {
+    #     logging.DEBUG: grey + format + reset,
+    #     logging.INFO: grey + format + reset,
+    #     logging.WARNING: yellow + format + reset,
+    #     logging.ERROR: red + format + reset,
+    #     logging.CRITICAL: bold_red + format + reset
+    # }
+
     FORMATS = {
-        logging.DEBUG: grey + format + reset,
-        logging.INFO: grey + format + reset,
-        logging.WARNING: yellow + format + reset,
-        logging.ERROR: red + format + reset,
-        logging.CRITICAL: bold_red + format + reset
+        logging.DEBUG: format,
+        logging.INFO: format,
+        logging.WARNING: format,
+        logging.ERROR: format,
+        logging.CRITICAL: format
     }
 
     def format(self, record):
