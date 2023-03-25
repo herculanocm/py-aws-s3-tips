@@ -5,8 +5,9 @@ from sys import exit, stdout
 from de_aws_s3_tips.custom_formatter_logger import CustomFormatter
 from de_aws_s3_tips.progress_percentage_upload import ProgressPercentage
 from zipfile import ZipFile, ZipInfo
-from io import BytesIO
+from io import BytesIO, StringIO
 import logging
+import csv
 
 def get_logger(logger: logging.Logger = None) -> logging.Logger:
     if logger is None:
@@ -116,6 +117,17 @@ def upload_fileobj(s3_client: aws_client, bytes_obj: bytes, bucket: str, key: st
         Callback=ProgressPercentage(file_name, file_size, logger)
     )
     logger.debug(f'File upload successful {file_name}')
+
+
+def list_dict_to_csv_bytes(lista: List[dict], delimiter: str = '|', quotechar: str = '"', quoting: str = csv.QUOTE_NONNUMERIC, lineterminator: str = '\r\n') -> bytes:
+    keys = lista[0].keys()
+    writer_file =  StringIO()
+    dict_writer = csv.DictWriter(writer_file, keys, delimiter=delimiter, quotechar=quotechar, quoting=quoting, lineterminator=lineterminator)
+    dict_writer.writeheader()
+    dict_writer.writerows(lista)
+    content = writer_file.getvalue()
+
+    return content.encode('utf-8')
 
 
 def unzip_bytes_upload_s3_objects(s3_client: aws_client, bytes_zip: bytes, target_bucket: str, target_key_prefix: str, logger=None):
