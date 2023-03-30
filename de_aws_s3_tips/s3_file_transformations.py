@@ -119,10 +119,13 @@ def upload_fileobj(s3_client: aws_client, bytes_obj: bytes, bucket: str, key: st
     logger.debug(f'File upload successful {file_name}')
 
 
-def list_dict_to_csv_bytes(lista: List[dict], delimiter: str = '|', quotechar: str = '"', quoting: str = csv.QUOTE_NONNUMERIC, lineterminator: str = '\r\n') -> BytesIO:
-    keys = lista[0].keys()
+def list_dict_to_csv_bytes(lista: List[dict], delimiter: str = '|', quotechar: str = '"', quoting: str = csv.QUOTE_NONNUMERIC, lineterminator: str = '\r\n', list_keys: list = None) -> BytesIO:
+    if list_keys is None:
+        list_keys = lista[0].keys()
+    
+    
     writer_file =  StringIO()
-    dict_writer = csv.DictWriter(writer_file, keys, delimiter=delimiter, quotechar=quotechar, quoting=quoting, lineterminator=lineterminator)
+    dict_writer = csv.DictWriter(writer_file, list_keys, delimiter=delimiter, quotechar=quotechar, quoting=quoting, lineterminator=lineterminator)
     dict_writer.writeheader()
     dict_writer.writerows(lista)
     content = writer_file.getvalue()
