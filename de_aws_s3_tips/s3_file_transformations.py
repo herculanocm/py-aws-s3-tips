@@ -171,15 +171,15 @@ def object_exists(s3_client: aws_client, bucket_name: str, key_name: str, logger
 def add_defaults_columns_cdc_v1(table_name: str, dict_schema: dict, add_sys_file_date: bool = True, logger=None) -> dict:
     logger = logging.getLogger()
     df_cols = [
-        {'table_name': table_name, 'column_name': 'sys_operation', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100001},
-        {'table_name': table_name, 'column_name': 'sys_commit_time', 'data_type': 'timestamp', 'primary_key': False, 'ordinal_position': 100002},
-        {'table_name': table_name, 'column_name': 'sys_commit_timestamp', 'data_type': 'timestamp', 'primary_key': False, 'ordinal_position': 100003},
-        {'table_name': table_name, 'column_name': 'sys_transaction_id', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100004},
-        {'table_name': table_name, 'column_name': 'sys_file_name', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100005},
-        {'table_name': table_name, 'column_name': 'id_controle_data_lake','data_type': 'int', 'primary_key': False, 'ordinal_position': 100006}
+        {'table_name': table_name, 'column_name': 'sys_operation', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100001, 'default_column': True},
+        {'table_name': table_name, 'column_name': 'sys_commit_time', 'data_type': 'timestamp', 'primary_key': False, 'ordinal_position': 100002, 'default_column': True},
+        {'table_name': table_name, 'column_name': 'sys_commit_timestamp', 'data_type': 'timestamp', 'primary_key': False, 'ordinal_position': 100003, 'default_column': True},
+        {'table_name': table_name, 'column_name': 'sys_transaction_id', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100004, 'default_column': True},
+        {'table_name': table_name, 'column_name': 'sys_file_name', 'data_type': 'varchar', 'primary_key': False, 'ordinal_position': 100005, 'default_column': True},
+        {'table_name': table_name, 'column_name': 'id_controle_data_lake','data_type': 'int', 'primary_key': False, 'ordinal_position': 100006, 'default_column': True}
     ]
     if add_sys_file_date == True:
-        df_cols.append({'table_name': table_name, 'column_name': 'sys_file_date', 'data_type': 'date', 'primary_key': False, 'ordinal_position': 100007})
+        df_cols.append({'table_name': table_name, 'column_name': 'sys_file_date', 'data_type': 'date', 'primary_key': False, 'ordinal_position': 100007, 'default_column': True})
 
     for dfc in df_cols:
         existe = 0
