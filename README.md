@@ -21,7 +21,7 @@ object_bytes = DE.get_bytes_by_s3_key_object(
 
 ## Enviroments
 
-* Python 3.9
+* Python >= 3.7
 
 ## Tests
 
