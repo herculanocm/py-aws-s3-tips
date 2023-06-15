@@ -6,8 +6,10 @@ from de_aws_s3_tips.custom_formatter_logger import CustomFormatter
 from de_aws_s3_tips.progress_percentage_upload import ProgressPercentage
 from zipfile import ZipFile, ZipInfo
 from io import BytesIO, StringIO
+from datetime import datetime
 import logging
 import csv
+
 
 def get_logger(logger: logging.Logger = None) -> logging.Logger:
     if logger is None:
@@ -77,6 +79,24 @@ def get_s3_objects_matching_prefix(s3_client: aws_client, bucket: str, prefix: s
     logger.debug(f'Return paginator size is {len(lst_return)}')
     return lst_return
 
+def rename_s3_file(s3_client, bucket_name, old_key, new_key, logger=None):
+    logger = logging.getLogger()
+    # Copy the file to the new key
+    copy_source = {'Bucket': bucket_name, 'Key': old_key}
+    logger.info('Copy the file to the new key')
+    s3_client.copy(copy_source, bucket_name, new_key)
+
+    # Delete the old file
+    logger.info('Delete the old file')
+    s3_client.delete_object(Bucket=bucket_name, Key=old_key)
+
+def get_s3_file_last_modified(s3_client, bucket_name, file_key) -> datetime:
+    # Get the object metadata
+    response = s3_client.head_object(Bucket=bucket_name, Key=file_key)
+
+    # Extract and return the last modified date
+    last_modified = response['LastModified']
+    return last_modified
 
 def delete_s3_objects_by_prefix(resource: aws_resource, bucket_name: str, prefix: str, logger=None):
     logger = logging.getLogger()
