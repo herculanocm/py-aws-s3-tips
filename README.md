@@ -4,6 +4,8 @@ de_aws_s3_tips = Data Engineer AWS S3 Python Tips
 
 First generate wheel file for install with
 ```
+virtualenv --python="/usr/bin/python3.9" "./venv"
+pip install -r requeriments.txt
 python setup.py bdist_wheel
 ```
 
@@ -21,7 +23,7 @@ object_bytes = DE.get_bytes_by_s3_key_object(
 
 ## Enviroments
 
-* Python >= 3.7
+* Python >= 3.9
 
 ## Tests
 
