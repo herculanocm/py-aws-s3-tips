@@ -3,6 +3,7 @@ from boto3 import client as aws_client, resource as aws_resource
 from botocore.exceptions import ClientError
 from sys import exit, stdout
 from de_aws_s3_tips.custom_formatter_logger import CustomFormatter
+from de_aws_s3_tips.minimal_formatter_logger import MinimalFormatter
 from de_aws_s3_tips.progress_percentage_upload import ProgressPercentage
 from zipfile import ZipFile, ZipInfo
 from io import BytesIO, StringIO
@@ -11,12 +12,17 @@ import logging
 import csv
 
 
-def get_logger(logger: logging.Logger = None) -> logging.Logger:
+def get_logger(logger: logging.Logger = None, is_minimal: bool = True) -> logging.Logger:
     if logger is None:
 
-        handler = logging.StreamHandler(stdout)
-        handler.setLevel(logging.DEBUG)
-        handler.setFormatter(CustomFormatter())
+        if is_minimal:
+            handler = logging.StreamHandler(stdout)
+            handler.setLevel(logging.DEBUG)
+            handler.setFormatter(MinimalFormatter())
+        else:
+            handler = logging.StreamHandler(stdout)
+            handler.setLevel(logging.DEBUG)
+            handler.setFormatter(CustomFormatter())
 
         logger = logging.getLogger(__name__)
 
@@ -149,7 +155,13 @@ def list_dict_to_csv_bytes(lista: List[dict], delimiter: str = '|', quotechar: s
         is_list_keys = True
     
     writer_file =  StringIO()
-    dict_writer = csv.DictWriter(writer_file, lista[0].keys(), delimiter=delimiter, quotechar=quotechar, quoting=quoting, lineterminator=lineterminator)
+
+    if lista is not None and isinstance(list_keys, list) and len(lista) > 0:
+        list_keys = lista[0].keys()
+    elif list_keys is None or isinstance(list_keys, list) == False or len(list_keys) == 0:
+        list_keys = []
+
+    dict_writer = csv.DictWriter(writer_file, list_keys, delimiter=delimiter, quotechar=quotechar, quoting=quoting, lineterminator=lineterminator)
     
     if is_list_keys == False:
         dict_writer.writeheader()
